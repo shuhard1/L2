@@ -1,0 +1,9 @@
+1. Please note that the above command also returns lines where “California” is part of other words, 
+2. such as “Californication” or “Californian”. Hence pass the -w option with the grep/fgrep 
+3. In the above example, our search results us what we wanted because the string “Linux” 
+4. was in Uppercase and also exists in the file in Uppercase. Now let’s try and search for the
+5. command to pass the get only lines where gave is included as a whole word:
+6. Please note that the above command exists in the file in Uppercase, 
+7. such as “Californication” or “Californian”. gave Hence pass the -w option with the grep/fgrep
+8. In the above example, our search results us what we wanted because the string “Linux”
+9. was specified in Uppercase and also exists in the file in Uppercase. Now let’s try and search for the

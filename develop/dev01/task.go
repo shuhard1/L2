@@ -16,7 +16,7 @@ import (
 	"github.com/beevik/ntp"
 )
 
-// возвращает текущее время
+// CurrentTime возвращает текущее время
 func CurrentTime() (time.Time, error) {
 	response, err := ntp.Query("0.beevik-ntp.pool.ntp.org")
 	if err != nil {
