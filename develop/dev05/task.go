@@ -9,7 +9,7 @@ import (
 	"regexp"
 )
 
-// wordCache is an in-memory cache of our word list
+// wordCache — это кеш в памяти нашего списка слов
 var wordCache []string
 
 type match struct {
@@ -55,8 +55,8 @@ func getFlags() (*Args, error) {
 	return args, nil
 }
 
-// readLines reads a whole file into memory
-// and returns a slice of its lines.
+// readLines читает весь файл в память
+// и возвращает часть своих строк.
 func readLines(path string) ([]string, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -72,8 +72,8 @@ func readLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-// grepDictionary filters words by the regular expression pattern.
-// It returns an error if the regular expression is not valid.
+// grepDictionary фильтрует слова по шаблону.
+// Возвращает ошибку, если выражение неверно.
 func grepDictionary(pattern string, words []string) ([]match, int, []int, error) {
 	args, err := getFlags()
 	if err != nil {
@@ -150,11 +150,7 @@ func grepDictionary(pattern string, words []string) ([]match, int, []int, error)
 	return matches, count, lineNum, nil
 }
 
-// grepHandler handles the HTTP request for the query page.
-// If the query string has the variable pattern set, it renders
-// the word list search results.
-
-// getWords returns the cached word list, or loads it.
+// getWords возвращает кэшированный список слов или загружает его.
 func getWords(file string) ([]string, error) {
 	if wordCache == nil {
 		words, err := readLines(file)

@@ -2,24 +2,68 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"strings"
+	"time"
 )
 
-func StrUnpacking(s string) string {
-	var result string = ""
-	for v, r := range s {
-		l := 1
-		if r >= 48 && r <= 57 {
-			l = int(r) - 48 - 1
-			r = rune(s[v-1])
-		}
-		for i := 0; i < l; i++ {
-			result += string(r)
-		}
-	}
-	return result
+type PassThru struct {
+	total int64 // Общее количество переданных байтов
+}
+
+// Write переопределяет базовый метод Write io.Writer.
+func (pt *PassThru) Write(p []byte) (n int, err error) {
+	b := len(p)
+	pt.total += int64(b)
+	return b, nil
 }
 
 func main() {
-	str := "a4bc2d5e"
-	fmt.Println(StrUnpacking(str))
+	var url, fileName string
+
+	fmt.Println("Enter url: ")
+	fmt.Scan(&url)
+
+	fileName = strings.Split(url, "/")[len(strings.Split(url, "/"))-1]
+	fmt.Println("Downloading", url, "to", fileName)
+
+	output, err := os.Create(fileName)
+	if err != nil {
+		fmt.Println("Error while creating", fileName, "-", err)
+		return
+	}
+	defer output.Close()
+
+	response, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error while downloading", url, "-", err)
+		return
+	}
+	defer response.Body.Close()
+
+	traf := PassThru{0}
+	quit := make(chan bool)
+	ticker := time.NewTicker(time.Second)
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				fmt.Println("downloaded", traf.total, "bytes")
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
+	n, err := io.Copy(output, io.TeeReader(response.Body, &traf))
+	if err != nil {
+		fmt.Println("Error while downloading", url, "-", err)
+		return
+	}
+	quit <- true
+
+	fmt.Println(n, "bytes downloaded.")
 }
