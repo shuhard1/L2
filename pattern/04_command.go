@@ -42,7 +42,6 @@ func (i *Invoker) StoreAndExecute(cmd Command) {
 	}
 }
 
-/*
 func main() {
 	receiver := new(Receiver)
 	commandA := &ConcreteCommandA{receiver}
@@ -51,4 +50,3 @@ func main() {
 	invoker.StoreAndExecute(commandA)
 	invoker.StoreAndExecute(commandB)
 }
-*/

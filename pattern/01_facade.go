@@ -1,4 +1,3 @@
-// Package facade is an example of the Facade Pattern.
 package pattern
 
 import (

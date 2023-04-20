@@ -10,6 +10,7 @@ type Element interface {
 
 type ConcreteElementA struct{}
 
+// Второй, не менее важный, этап – добавление метода accept в интерфейс фигуры.
 func (e *ConcreteElementA) Accept(visitor Visitor) {
 	fmt.Println("ConcreteElementA.Accept()")
 	visitor.VisitA(e)
@@ -17,12 +18,16 @@ func (e *ConcreteElementA) Accept(visitor Visitor) {
 
 type ConcreteElementB struct{}
 
+// Второй, не менее важный, этап – добавление метода accept в интерфейс фигуры.
 func (e *ConcreteElementB) Accept(visitor Visitor) {
 	fmt.Println("ConcreteElementB.Accept()")
 	visitor.VisitB(e)
 }
 
+// сперва мы определяем интерфейс посетителя следующим способом:
 type Visitor interface {
+	//Функции VisitA(), VisitB() позволят нам добавлять функционал для квадратов,
+	//кругов и треугольников соответственно.
 	VisitA(*ConcreteElementA)
 	VisitB(*ConcreteElementB)
 }
@@ -37,7 +42,6 @@ func (v *ConcreteVisitor) VisitB(element *ConcreteElementB) {
 	fmt.Println("ConcreteVisitor.VisitB()")
 }
 
-/*
 func main() {
 	visitor := new(ConcreteVisitor)
 	elementA := new(ConcreteElementA)
@@ -45,4 +49,3 @@ func main() {
 	elementA.Accept(visitor)
 	elementB.Accept(visitor)
 }
-*/
